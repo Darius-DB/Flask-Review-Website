@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="site-heading">
+                    {% if header %}
+                        <h1>{{ header }}</h1>
+                    {% else %}
+                        <h1>ReviewIt</h1>
+                    {% endif %}
+                    <span class="subheading">Posts by {{ user.username }} : {{ reviews.total }}</span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+{% endblock header %}
+
+
+{% block content %}
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-preview">
+                {% for review in reviews.items %}
+                <a href="{{ url_for('reviews.review', review_id=review.id) }}">
+                    <h2 class="post-title">
+                        {{review.title}}
+                    </h2>
+                    <h3 class="post-subtitle">
+                        {{ review.description }}
+                    </h3>
+                </a>
+                <p class="post-meta">Posted by {{ review.author.username }} on
+                    {{ review.date_created.strftime('%Y-%m-%d') }}</p>
+                    <hr>
+                {% endfor %}
+            </div>
+           
+
+            <!-- Pager -->
+            {% for page_num in reviews.iter_pages() %}
+                {% if page_num %}
+                    {% if reviews.page == page_num %}
+                        <ul class="pager">
+                            <li class="next">
+                                <a href="{{ url_for('users.user_posts',username=user.username, page=page_num+1) }}">Older Posts &rarr;</a>
+                            </li>
+
+                            <li class="previous">
+                                <a href="{{ url_for('users.user_posts',username=user.username, page=page_num-1) }}">&larr;
+                                    Newer Posts </a>
+                            </li>
+                        </ul>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<hr>
+{% endblock content %}
