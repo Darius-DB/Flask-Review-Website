@@ -25,18 +25,33 @@
                 <!-- Pager -->
             {% for page_num in reviews.iter_pages() %}
                 {% if page_num %}
-                    {% if reviews.page == page_num %}
-                        <ul class="pager">
-                            <li class="next">
-                                <a href="{{ url_for('main.home', page=page_num+1) }}">Older Posts &rarr;</a>
-                            </li>
 
-                            <li class="previous">
-                                <a href="{{ url_for('main.home', page=page_num-1) }}">&larr;
-                                     Newer Posts </a>
-                            </li>
-                        </ul>
+                    {% if reviews.page == page_num %}
+
+                        <span class="page-number pager">Page {{ page_num }}</span>
+
+                        {% if reviews.has_prev %}
+                            <ul class="pager">
+                                <li class="previous">
+                                    <a href="{{ url_for('main.home', page=page_num-1) }}">&larr;
+                                        Newer Posts </a>
+                                </li>
+                            </ul>
+                        {% endif %}
+
+                        
+
+                        {% if reviews.has_next %}
+                            <ul class="pager">
+                                <li class="next">
+                                    <a href="{{ url_for('main.home', page=page_num+1) }}">Older Posts &rarr;</a>
+                                </li>
+                            </ul>
+                        {% endif %}
+
                     {% endif %}
+
+                    
                 {% endif %}
             {% endfor %}
             </div>
